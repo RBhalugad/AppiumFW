@@ -5,6 +5,11 @@ import java.net.URI;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
+
+import com.google.common.collect.ImmutableMap;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
@@ -39,5 +44,12 @@ public class BaseTest {
     public void tearDown() {
         driver.quit();
         service.stop();
+    }
+
+    public void longPressAction(WebElement ele) {
+        ((JavascriptExecutor) driver).executeScript("mobile: longClickGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) ele).getId(),
+                "duration", 2000));
+
     }
 }
