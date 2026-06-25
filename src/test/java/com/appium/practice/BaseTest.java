@@ -3,7 +3,9 @@ package com.appium.practice;
 import java.io.File;
 import java.net.URI;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -34,8 +36,12 @@ public class BaseTest {
         service.start();
 
         UiAutomator2Options option = new UiAutomator2Options();
-        option.setDeviceName("emulator-5554");
-        option.setApp("C:\\Users\\randh\\Downloads\\ApiDemos-debug.apk");
+        option.setPlatformName("Android");
+        option.setDeviceName("PVVKHQ8LC6KF7HKN");
+        option.setAutomationName("UiAutomator2");
+        option.setIgnoreHiddenApiPolicyError(true);
+        // option.setNoReset(true);
+        option.setApp(new File("src/test/java/com/appium/practice/resources/ApiDemos-debug.apk").getAbsolutePath());
 
         driver = new AndroidDriver(new URI("http://127.0.0.1:4723").toURL(), option);
     }
@@ -66,5 +72,19 @@ public class BaseTest {
                             "direction", "down",
                             "percent", 3));
         } while (canScrollMore);
+    }
+
+    public void swipeAction(WebElement ele, String direction) {
+        ((JavascriptExecutor) driver).executeScript("mobile: swipeGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) ele).getId(),
+                "direction", direction,
+                "percent", 3));
+    }
+
+    public void dragAndDrop(WebElement source, int x, int y) {
+        ((JavascriptExecutor) driver).executeScript("mobile: dragGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) source).getId(),
+                "endX", x,
+                "endY", y));
     }
 }
